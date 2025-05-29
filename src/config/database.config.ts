@@ -1,4 +1,5 @@
 // config/database.config.ts
+import { ConfigService } from '@nestjs/config';
 import { DataSourceOptions } from 'typeorm';
 
 const baseConfig: Partial<DataSourceOptions> = {
@@ -7,40 +8,46 @@ const baseConfig: Partial<DataSourceOptions> = {
   migrations: ['dist/migrations/*.js'],
 };
 
-const configs = {
-  development: {
-    ...baseConfig,
-    host: 'localhost',
-    port: 5432,
-    username: 'dev_user',
-    password: 'dev_pass',
-    database: 'myapp_dev',
-    synchronize: true,
-    logging: true,
-  },
+export const getDatabaseConfig = (
+  configService: ConfigService,
+): DataSourceOptions => {
+  const environment = configService.get('NODE_ENV', 'development');
+  const configs = {
+    development: {
+      ...baseConfig,
+      host: configService.getOrThrow<string>('DATABASE_HOST'),
+      port: configService.getOrThrow<number>('DATABASE_PORT'),
+      username: configService.getOrThrow<string>('DATABASE_USERNAME'),
+      password: configService.getOrThrow<string>('DATABASE_PASSWORD'),
+      database: configService.getOrThrow<string>('DATABASE_NAME'),
+      synchronize: configService.getOrThrow<boolean>('DATABASE_SYNC'),
+      logging: true,
+    },
 
-  test: {
-    ...baseConfig,
-    host: 'localhost',
-    port: 5433,
-    username: 'test_user',
-    password: 'test_pass',
-    database: 'myapp_test',
-    synchronize: true,
-    dropSchema: true,
-  },
+    // fake
+    test: {
+      ...baseConfig,
+      host: 'localhost',
+      port: 5433,
+      username: 'test_user',
+      password: 'test_pass',
+      database: 'myapp_test',
+      synchronize: true,
+      dropSchema: true,
+    },
 
-  production: {
-    ...baseConfig,
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT ?? '5432'),
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    synchronize: false,
-    logging: false,
-    ssl: { rejectUnauthorized: false },
-  },
+    production: {
+      ...baseConfig,
+      host: configService.getOrThrow<string>('DATABASE_HOST'),
+      port: configService.getOrThrow<number>('DATABASE_PORT'),
+      username: configService.getOrThrow<string>('DATABASE_USERNAME'),
+      password: configService.getOrThrow<string>('DATABASE_PASSWORD'),
+      database: configService.getOrThrow<string>('DATABASE_NAME'),
+      synchronize: configService.getOrThrow<boolean>('DATABASE_SYNC'),
+      logging: false,
+      ssl: { rejectUnauthorized: false },
+    },
+  };
+
+  return configs[environment] as DataSourceOptions;
 };
-
-export const databaseConfig = configs[process.env.NODE_ENV || 'development'];

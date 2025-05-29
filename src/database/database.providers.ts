@@ -1,11 +1,13 @@
 import { DataSource } from 'typeorm';
-import { databaseConfig } from '../config/database.config';
+import { ConfigService } from '@nestjs/config';
+import { getDatabaseConfig } from 'src/config/database.config';
 
 export const databaseProviders = [
   {
     provide: 'DATA_SOURCE',
-    useFactory: async () => {
-      const dataSource = new DataSource(databaseConfig);
+    inject: [ConfigService],
+    useFactory: async (configService: ConfigService) => {
+      const dataSource = new DataSource(getDatabaseConfig(configService));
       return dataSource.initialize();
     },
   },
