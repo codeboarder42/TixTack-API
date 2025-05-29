@@ -15,7 +15,8 @@ import { TicketsModule } from './tickets/tickets.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
+      envFilePath: ['./.env'],
+      load: [],
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
