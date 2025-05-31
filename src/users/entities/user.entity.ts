@@ -1,7 +1,9 @@
+import { Ticket } from 'src/tickets/entities/ticket.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -25,4 +27,10 @@ export class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @OneToMany(() => Ticket, (ticket) => ticket.createdBy)
+  createdTickets: Ticket[];
+
+  @OneToMany(() => Ticket, (ticket) => ticket.createdBy)
+  assignedTickets: Ticket[];
 }

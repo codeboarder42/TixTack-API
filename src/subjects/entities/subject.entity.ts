@@ -1,10 +1,12 @@
 import { Service } from 'src/services/entities/service.entity';
+import { Ticket } from 'src/tickets/entities/ticket.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -31,6 +33,9 @@ export class Subject {
 
   @Column({ default: true })
   active: boolean;
+
+  @OneToMany(() => Ticket, (ticket) => ticket.subject)
+  tickets: Ticket[];
 
   @CreateDateColumn()
   created_at: Date;
