@@ -1,13 +1,10 @@
 import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UpdateServiceDto {
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  id: string;
-
-  @IsString()
-  @IsNotEmpty()
-  name: string;
+  name?: string;
 
   @IsOptional()
   @IsString()
@@ -15,5 +12,6 @@ export class UpdateServiceDto {
 
   @IsOptional()
   @IsBoolean()
+  @IsNotEmpty()
   active?: string;
 }
