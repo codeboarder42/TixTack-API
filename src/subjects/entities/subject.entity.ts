@@ -19,7 +19,7 @@ export class Subject {
   @Column()
   label: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
   @Column({ name: 'service_id' })
