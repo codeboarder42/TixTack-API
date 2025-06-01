@@ -13,7 +13,15 @@ export class ServicesService {
   ) {}
 
   async findAll(): Promise<Service[]> {
-    return this.serviceRepository.find();
+    return this.serviceRepository.find({
+      relations: ['subjects'],
+      order: {
+        name: 'ASC',
+        subjects: {
+          label: 'ASC',
+        },
+      },
+    });
   }
 
   async findOneById(id: string): Promise<Service | null> {
