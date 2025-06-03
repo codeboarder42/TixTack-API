@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { UserApplicationRole } from 'src/common/entities/user-application-role.entity';
 
 @Entity()
 export class User {
@@ -33,4 +34,7 @@ export class User {
 
   @OneToMany(() => Ticket, (ticket) => ticket.createdBy)
   assignedTickets: Ticket[];
+
+  @OneToMany(() => UserApplicationRole, (userRole) => userRole.user)
+  userApplicationRoles: UserApplicationRole[];
 }
