@@ -10,6 +10,11 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
+  // Enregistrement du plugin cookie pour Fastify
+  await app.register(require('@fastify/cookie'), {
+    secret: process.env.COOKIE_SECRET || 'dev-secret-key',
+  });
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
