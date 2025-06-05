@@ -18,5 +18,6 @@ import { User } from 'src/users/entities/user.entity';
   ],
   providers: [CommonService],
   controllers: [CommonController],
+  exports: [CommonService],
 })
 export class CommonModule {}

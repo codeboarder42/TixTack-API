@@ -6,11 +6,16 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { Service } from './entities/service.entity';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
+import { Roles } from 'src/guards/role.decorator';
+import { RoleGuard } from 'src/guards/role.guard';
+import { RoleType } from 'src/common/entities/application-role.entity';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('services')
 export class ServicesController {
@@ -27,6 +32,8 @@ export class ServicesController {
   }
 
   @Post()
+  @UseGuards(AuthGuard, RoleGuard)
+  @Roles(RoleType.ADMIN)
   async create(@Body() service: CreateServiceDto): Promise<Service> {
     return this.serviceService.create(service);
   }
