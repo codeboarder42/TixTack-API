@@ -47,8 +47,6 @@ export class Ticket {
   @JoinColumn({ name: 'assigned_to' })
   assignee: User;
 
-  @Column({ name: 'subject_id' })
-  subjectId: string;
   @ManyToOne(() => Subject, (subject) => subject.tickets, {
     onDelete: 'SET NULL',
   })
