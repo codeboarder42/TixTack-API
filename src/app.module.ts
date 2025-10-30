@@ -10,6 +10,7 @@ import { UserModule } from './user/user.module';
 import { ServiceModule } from './service/service.module';
 import { SubjectModule } from './subject/subject.module';
 import { TicketModule } from './ticket/ticket.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { TicketModule } from './ticket/ticket.module';
     ServiceModule,
     SubjectModule,
     TicketModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
