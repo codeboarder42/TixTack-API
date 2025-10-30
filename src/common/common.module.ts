@@ -5,7 +5,7 @@ import { ApplicationRole } from './entities/application-role.entity';
 import { UserApplicationRole } from './entities/user-application-role.entity';
 import { CommonService } from './common.service';
 import { CommonController } from './common.controller';
-import { User } from 'src/users/entities/user.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Module({
   imports: [

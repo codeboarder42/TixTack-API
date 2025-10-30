@@ -102,7 +102,7 @@ TixTrack follows a modular monolithic architecture with clear separation of conc
 ├─────────────────────────────────────────┤
 │  Guards (Auth, Roles)                   │
 ├─────────────────────────────────────────┤
-│  Services (Business Logic)              │
+│  Service (Business Logic)              │
 ├─────────────────────────────────────────┤
 │  TypeORM (Data Access Layer)            │
 ├─────────────────────────────────────────┤
@@ -113,10 +113,10 @@ TixTrack follows a modular monolithic architecture with clear separation of conc
 ### Core Modules
 
 - **Auth Module** - Session-based authentication
-- **Users Module** - User management
-- **Tickets Module** - Ticket CRUD operations
-- **Services Module** - Service category management
-- **Subjects Module** - Subject (subcategory) management
+- **User Module** - User management
+- **Ticket Module** - Ticket CRUD operations
+- **Service Module** - Service category management
+- **Subject Module** - Subject (subcategory) management
 - **Common Module** - Shared entities and utilities
 
 ## Getting Started
@@ -298,7 +298,7 @@ All authenticated requests require a session cookie. The session is established 
 
 ### Example Endpoints
 
-#### Tickets
+#### Ticket
 
 - `GET /tickets` - List all tickets
 - `POST /tickets` - Create a new ticket
@@ -306,14 +306,14 @@ All authenticated requests require a session cookie. The session is established 
 - `PATCH /tickets/:id` - Update ticket
 - `DELETE /tickets/:id` - Delete ticket
 
-#### Services (Admin only)
+#### Service (Admin only)
 
 - `GET /services` - List all services
 - `POST /services` - Create service (requires `ADMIN` role)
 - `PATCH /services/:id` - Update service (requires `ADMIN` role)
 - `DELETE /services/:id` - Delete service (requires `ADMIN` role)
 
-#### Subjects
+#### Subject
 
 - `GET /subjects` - List all subjects
 - `POST /subjects` - Create subject
@@ -321,7 +321,7 @@ All authenticated requests require a session cookie. The session is established 
 - `PATCH /subjects/:id` - Update subject
 - `DELETE /subjects/:id` - Delete subject
 
-#### Users
+#### User
 
 - `GET /users` - List all users
 - `GET /users/:id` - Get user by ID

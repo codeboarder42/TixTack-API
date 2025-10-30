@@ -6,10 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { getDatabaseConfig } from './config/database.config';
 import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { ServicesModule } from './services/services.module';
-import { SubjectsModule } from './subjects/subjects.module';
-import { TicketsModule } from './tickets/tickets.module';
+import { UserModule } from './user/user.module';
+import { ServiceModule } from './service/service.module';
+import { SubjectModule } from './subject/subject.module';
+import { TicketModule } from './ticket/ticket.module';
 
 @Module({
   imports: [
@@ -25,10 +25,10 @@ import { TicketsModule } from './tickets/tickets.module';
     }),
     CommonModule,
     AuthModule,
-    UsersModule,
-    ServicesModule,
-    SubjectsModule,
-    TicketsModule,
+    UserModule,
+    ServiceModule,
+    SubjectModule,
+    TicketModule,
   ],
   controllers: [AppController],
   providers: [AppService],
