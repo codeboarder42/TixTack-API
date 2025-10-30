@@ -71,19 +71,23 @@ TixTrack is a comprehensive ticket tracking system designed to manage support ti
 
 ### Backend
 
-| Technology          | Version | Purpose                       |
-| ------------------- | ------- | ----------------------------- |
-| **NestJS**          | 11.0.1  | Progressive Node.js framework |
-| **TypeScript**      | 5.7.3   | Type-safe development         |
-| **Fastify**         | 5.3.3   | High-performance HTTP server  |
-| **TypeORM**         | 0.3.24  | Database ORM                  |
-| **PostgreSQL**      | latest  | Relational database           |
-| **class-validator** | 0.14.2  | Data validation               |
-| **Jest**            | 29.7.0  | Testing framework             |
+| Technology            | Version | Purpose                       |
+| --------------------- | ------- | ----------------------------- |
+| **NestJS**            | 11.0.1  | Progressive Node.js framework |
+| **TypeScript**        | 5.7.3   | Type-safe development         |
+| **Fastify**           | 5.3.3   | High-performance HTTP server  |
+| **TypeORM**           | 0.3.24  | Database ORM                  |
+| **PostgreSQL**        | latest  | Relational database           |
+| **class-validator**   | 0.14.2  | Data validation               |
+| **class-transformer** | 0.5.1   | DTO transformation            |
+| **Jest**              | 29.7.0  | Testing framework             |
+| **@nestjs/swagger**   | 11.2.1  | OpenAPI documentation         |
+| **@nestjs/terminus**  | 11.0.0  | Health checks                 |
 
 ### Development Tools
 
 - **Docker & Docker Compose** - Containerization
+- **Swagger/OpenAPI** - API documentation (available at `/api`)
 - **ESLint** - Code linting
 - **Prettier** - Code formatting
 - **TypeScript ESLint** - TypeScript-specific linting
@@ -117,7 +121,17 @@ TixTrack follows a modular monolithic architecture with clear separation of conc
 - **Ticket Module** - Ticket CRUD operations
 - **Service Module** - Service category management
 - **Subject Module** - Subject (subcategory) management
+- **Health Module** - Health check endpoints
 - **Common Module** - Shared entities and utilities
+
+### Naming Conventions
+
+The project follows NestJS best practices with **singular naming**:
+
+- **Module directories**: `user/`, `ticket/`, `service/`, `subject/` (singular)
+- **Entity classes**: `User`, `Ticket`, `Service`, `Subject` (singular)
+- **Controller routes**: `/user`, `/ticket`, `/service`, `/subject` (singular)
+- **Database tables**: `users`, `tickets`, `services`, `subjects` (plural)
 
 ## Getting Started
 
@@ -216,54 +230,61 @@ TixTrack/
 │   │   │   ├── auth.module.ts
 │   │   │   └── auth.service.ts
 │   │   │
-│   │   ├── users/                   # User management
+│   │   ├── user/                    # User management (singular)
 │   │   │   ├── entities/
 │   │   │   │   └── user.entity.ts
 │   │   │   ├── dto/
-│   │   │   ├── users.controller.ts
-│   │   │   ├── users.service.ts
-│   │   │   └── users.module.ts
+│   │   │   ├── user.controller.ts
+│   │   │   ├── user.service.ts
+│   │   │   └── user.module.ts
 │   │   │
-│   │   ├── tickets/                 # Ticket management
+│   │   ├── ticket/                  # Ticket management (singular)
 │   │   │   ├── entities/
 │   │   │   │   └── ticket.entity.ts
 │   │   │   ├── dto/
-│   │   │   ├── tickets.controller.ts
-│   │   │   ├── tickets.service.ts
-│   │   │   └── tickets.module.ts
+│   │   │   ├── ticket.controller.ts
+│   │   │   ├── ticket.service.ts
+│   │   │   └── ticket.module.ts
 │   │   │
-│   │   ├── services/                # Service categories
+│   │   ├── service/                 # Service categories (singular)
 │   │   │   ├── entities/
 │   │   │   │   └── service.entity.ts
 │   │   │   ├── dto/
-│   │   │   ├── services.controller.ts
-│   │   │   ├── services.service.ts
-│   │   │   └── services.module.ts
+│   │   │   ├── service.controller.ts
+│   │   │   ├── service.service.ts
+│   │   │   └── service.module.ts
 │   │   │
-│   │   ├── subjects/                # Ticket subjects
+│   │   ├── subject/                 # Ticket subjects (singular)
 │   │   │   ├── entities/
 │   │   │   │   └── subject.entity.ts
 │   │   │   ├── dto/
-│   │   │   ├── subjects.controller.ts
-│   │   │   ├── subjects.service.ts
-│   │   │   └── subjects.module.ts
+│   │   │   ├── subject.controller.ts
+│   │   │   ├── subject.service.ts
+│   │   │   └── subject.module.ts
+│   │   │
+│   │   ├── health/                  # Health check module
+│   │   │   ├── health.controller.ts
+│   │   │   └── health.module.ts
 │   │   │
 │   │   ├── common/                  # Shared module
 │   │   │   ├── entities/
 │   │   │   │   ├── application.entity.ts
 │   │   │   │   ├── application-role.entity.ts
-│   │   │   │   └── user-application-role.entity.ts
+│   │   │   │   ├── user-application-role.entity.ts
+│   │   │   │   └── timestamp.embeddable.ts
+│   │   │   ├── dto/
+│   │   │   ├── enum/
 │   │   │   ├── common.controller.ts
 │   │   │   ├── common.service.ts
 │   │   │   └── common.module.ts
 │   │   │
 │   │   ├── guards/                  # Authorization guards
-│   │   │   ├── auth.guard.ts        # Authentication
-│   │   │   ├── role.guard.ts        # RBAC
+│   │   │   ├── auth.guard.ts        # Session-based auth
+│   │   │   ├── role.guard.ts        # RBAC enforcement
 │   │   │   └── role.decorator.ts    # @Roles() decorator
 │   │   │
 │   │   ├── config/                  # Configuration
-│   │   │   └── database.config.ts
+│   │   │   └── database.config.ts   # Multi-env database config
 │   │   │
 │   │   ├── database/                # Database module
 │   │   │   ├── database.providers.ts
@@ -284,7 +305,20 @@ TixTrack/
 └── data/                            # PostgreSQL data volume
 ```
 
+**Note:** Module directories use singular naming convention (e.g., `user/`, `ticket/`, `service/`, `subject/`) following NestJS best practices.
+
 ## API Documentation
+
+### Interactive Documentation
+
+**Swagger UI is available at:** [`http://localhost:3000/api`](http://localhost:3000/api)
+
+The Swagger interface provides:
+
+- Interactive API testing
+- Complete request/response schemas
+- Authentication examples
+- Real-time validation
 
 ### Base URL
 
@@ -298,35 +332,37 @@ All authenticated requests require a session cookie. The session is established 
 
 ### Example Endpoints
 
+#### Health Check
+
+- `GET /health` - Check database connectivity and application health
+
 #### Ticket
 
-- `GET /tickets` - List all tickets
-- `POST /tickets` - Create a new ticket
-- `GET /tickets/:id` - Get ticket by ID
-- `PATCH /tickets/:id` - Update ticket
-- `DELETE /tickets/:id` - Delete ticket
+- `GET /ticket` - List all tickets
+- `POST /ticket` - Create a new ticket
+- `GET /ticket/:id` - Get ticket by ID
+- `PATCH /ticket/:id` - Update ticket
+- `DELETE /ticket/:id` - Delete ticket
 
 #### Service (Admin only)
 
-- `GET /services` - List all services
-- `POST /services` - Create service (requires `ADMIN` role)
-- `PATCH /services/:id` - Update service (requires `ADMIN` role)
-- `DELETE /services/:id` - Delete service (requires `ADMIN` role)
+- `GET /service` - List all services
+- `POST /service` - Create service (requires `ADMIN` role)
+- `PATCH /service/:id` - Update service (requires `ADMIN` role)
+- `DELETE /service/:id` - Delete service (requires `ADMIN` role)
 
 #### Subject
 
-- `GET /subjects` - List all subjects
-- `POST /subjects` - Create subject
-- `GET /subjects/:id` - Get subject by ID
-- `PATCH /subjects/:id` - Update subject
-- `DELETE /subjects/:id` - Delete subject
+- `GET /subject` - List all subjects
+- `POST /subject` - Create subject
+- `GET /subject/:id` - Get subject by ID
+- `PATCH /subject/:id` - Update subject
+- `DELETE /subject/:id` - Delete subject
 
 #### User
 
-- `GET /users` - List all users
-- `GET /users/:id` - Get user by ID
-
-> **Note:** Detailed API documentation with request/response schemas will be available via Swagger/OpenAPI in future releases.
+- `GET /user` - List all users
+- `GET /user/:id` - Get user by ID
 
 ## Database Schema
 
@@ -495,6 +531,13 @@ npm run test:e2e
 - **AuthGuard** validates session for protected routes
 - **RoleGuard** enforces role-specific permissions
 
+### Security Features
+
+- **Helmet Integration** - HTTP security headers (CSP, X-Frame-Options, etc.)
+- **Content Security Policy** - Configured for Swagger compatibility
+- **HTTP-only Cookies** - Secure session management
+- **Role-based Guards** - Fine-grained access control
+
 ### Best Practices
 
 - Never commit `.env` files to version control
@@ -531,6 +574,10 @@ DATABASE_SYNC=false
 - [x] Session authentication infrastructure
 - [x] Docker support
 - [x] Database migrations
+- [x] API documentation (Swagger/OpenAPI)
+- [x] Health check endpoints
+- [x] Security headers (Helmet)
+- [x] Multi-environment database configuration
 
 ### Planned Features
 
@@ -542,7 +589,6 @@ DATABASE_SYNC=false
 - [ ] Comment/discussion threads
 - [ ] Ticket history/audit log
 - [ ] Dashboard and analytics
-- [ ] API documentation (Swagger/OpenAPI)
 - [ ] Rate limiting and throttling
 - [ ] Full-text search
 - [ ] Advanced filtering and sorting
