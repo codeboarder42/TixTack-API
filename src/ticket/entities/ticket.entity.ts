@@ -8,6 +8,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
 } from 'typeorm';
 
 @Entity('tickets')
@@ -15,10 +16,10 @@ export class Ticket {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ nullable: false })
   title: string;
 
-  @Column('text')
+  @Column({ type: 'text', nullable: false })
   description: string;
 
   @Column({
@@ -37,25 +38,37 @@ export class Ticket {
 
   @ManyToOne(() => User, (user) => user.createdTickets, {
     onDelete: 'SET NULL',
+    nullable: false,
   })
   @JoinColumn({ name: 'created_by' })
   creator: User;
 
+  @RelationId((ticket: Ticket) => ticket.creator)
+  creatorId: number;
+
   @ManyToOne(() => User, (user) => user.assignedTickets, {
     onDelete: 'SET NULL',
+    nullable: false,
   })
   @JoinColumn({ name: 'assigned_to' })
   assignee: User;
 
+  @RelationId((ticket: Ticket) => ticket.assignee)
+  assigneeId: number;
+
   @ManyToOne(() => Subject, (subject) => subject.tickets, {
     onDelete: 'SET NULL',
+    nullable: false,
   })
   @JoinColumn({ name: 'subject_id' })
   subject: Subject;
 
+  @RelationId((ticket: Ticket) => ticket.subject)
+  subjectId: number;
+
   @Column(() => Timestamp, { prefix: false })
   timestamp: Timestamp;
 
-  @Column({ name: 'resolved_at', nullable: true })
-  resolvedAt: Date;
+  @Column({ name: 'resolved_at' })
+  resolvedAt?: Date | null;
 }

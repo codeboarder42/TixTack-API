@@ -1,12 +1,5 @@
 import { Ticket } from 'src/ticket/entities/ticket.entity';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UserApplicationRole } from 'src/common/entities/user-application-role.entity';
 import { Timestamp } from 'src/common/entities/timestamp.embeddable';
 
@@ -15,13 +8,13 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   email: string;
 
-  @Column({ name: 'first_name' })
+  @Column({ name: 'first_name', nullable: false })
   firstName: string;
 
-  @Column({ name: 'last_name' })
+  @Column({ name: 'last_name', nullable: false })
   lastName: string;
 
   @Column(() => Timestamp, { prefix: false })

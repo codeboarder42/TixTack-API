@@ -13,11 +13,11 @@ export class Service {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   name: string;
 
-  @Column({ type: 'varchar', nullable: true })
-  description: string | null;
+  @Column({ type: 'varchar' })
+  description?: string | null;
 
   @OneToMany(() => Subject, (subject) => subject.service)
   subjects: Subject[];
@@ -26,5 +26,5 @@ export class Service {
   timestamp: Timestamp;
 
   @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: Date | null;
+  deletedAt?: Date | null;
 }

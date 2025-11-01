@@ -9,6 +9,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  RelationId,
 } from 'typeorm';
 
 @Entity('subjects')
@@ -16,20 +17,21 @@ export class Subject {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ nullable: false })
   name: string;
 
-  @Column({ type: 'varchar', nullable: true })
-  description: string | null;
-
-  @Column({ name: 'service_id' })
-  service_id: string;
+  @Column({ type: 'varchar' })
+  description?: string | null;
 
   @ManyToOne(() => Service, (service) => service.subjects, {
     onDelete: 'CASCADE',
+    nullable: false,
   })
   @JoinColumn({ name: 'service_id' })
   service: Service;
+
+  @RelationId((subject: Subject) => subject.service)
+  serviceId: number;
 
   @OneToMany(() => Ticket, (ticket) => ticket.subject)
   tickets: Ticket[];
@@ -38,5 +40,5 @@ export class Subject {
   timestamp: Timestamp;
 
   @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: Date | null;
+  deletedAt?: Date | null;
 }
