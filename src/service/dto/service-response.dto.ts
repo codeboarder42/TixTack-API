@@ -1,6 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Exclude, Expose, Type } from 'class-transformer';
-import { Timestamp } from 'src/common/entities/timestamp.embeddable';
+import { Expose, Type } from 'class-transformer';
 import { SubjectResponseDto } from 'src/subject/dto';
 
 export class ServiceResponseDto {
@@ -28,7 +27,7 @@ export class ServiceResponseDto {
     maxLength: 255,
   })
   @Expose()
-  description: string;
+  description?: string;
 
   @ApiProperty({
     description: 'Subjects of the service',
@@ -37,10 +36,4 @@ export class ServiceResponseDto {
   @Expose()
   @Type(() => SubjectResponseDto)
   subjects: SubjectResponseDto[];
-
-  @Exclude()
-  timestamp: Timestamp;
-
-  @Exclude()
-  deletedAt: Date;
 }

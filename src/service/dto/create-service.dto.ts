@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class CreateServiceDto {
   @ApiProperty({
@@ -10,7 +10,7 @@ export class CreateServiceDto {
   })
   @IsNotEmpty()
   @IsString()
-  @Length(1, 45)
+  @MaxLength(45)
   name: string;
 
   @ApiPropertyOptional({
@@ -20,7 +20,8 @@ export class CreateServiceDto {
     maxLength: 255,
   })
   @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  @Length(1, 255)
+  @MaxLength(255)
   description?: string;
 }

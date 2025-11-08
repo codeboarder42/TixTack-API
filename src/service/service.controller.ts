@@ -24,6 +24,7 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { serializeDto } from 'src/common/utils/serializer.helper';
 
 @ApiTags('service')
 @Controller('service')
@@ -33,14 +34,16 @@ export class ServiceController {
   @Get()
   @ApiOkResponse({ type: [ServiceResponseDto] })
   async findAll(): Promise<ServiceResponseDto[]> {
-    return this.serviceService.findAll();
+    const services = await this.serviceService.findAll();
+    return serializeDto(ServiceResponseDto, services);
   }
 
   @Get(':id')
   @ApiOkResponse({ type: ServiceResponseDto })
-  @ApiNotFoundResponse({ description: 'Serice not found' })
+  @ApiNotFoundResponse({ description: 'Service not found' })
   async findOneById(@Param('id') id: string): Promise<ServiceResponseDto> {
-    return this.serviceService.findOneById(id);
+    const service = await this.serviceService.findOneById(id);
+    return serializeDto(ServiceResponseDto, service);
   }
 
   @Post()
@@ -48,23 +51,25 @@ export class ServiceController {
   @UseGuards(AuthGuard, RoleGuard)
   @Roles(RoleType.ADMIN)
   async create(@Body() service: CreateServiceDto): Promise<ServiceResponseDto> {
-    return this.serviceService.create(service);
+    const newService = await this.serviceService.create(service);
+    return serializeDto(ServiceResponseDto, newService);
   }
 
   @Patch(':id')
   @ApiOkResponse({ type: ServiceResponseDto })
-  @ApiNotFoundResponse({ description: 'Serice not found' })
+  @ApiNotFoundResponse({ description: 'Service not found' })
   async update(
     @Param('id') id: string,
     @Body() service: UpdateServiceDto,
   ): Promise<ServiceResponseDto> {
-    return this.serviceService.update(id, service);
+    const updatedService = await this.serviceService.update(id, service);
+    return serializeDto(ServiceResponseDto, updatedService);
   }
 
   @Delete(':id')
   @HttpCode(204)
   @ApiNoContentResponse({ description: 'Service deleted' })
-  @ApiNotFoundResponse({ description: 'Serice not found' })
+  @ApiNotFoundResponse({ description: 'Service not found' })
   async delete(@Param('id') id: string): Promise<void> {
     return this.serviceService.delete(id);
   }
