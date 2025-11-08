@@ -31,7 +31,7 @@ export class ApplicationRole {
   })
   role: RoleType;
 
-  @ManyToOne(() => Application)
+  @ManyToOne(() => Application, (application) => application.applicationRoles)
   @JoinColumn({ name: 'application_id' })
   application: Application;
 
