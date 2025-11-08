@@ -1,13 +1,33 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
-import { BaseSubjectDto } from './base-subject.dto';
+import { IsNotEmpty, IsString, IsUUID, Length } from 'class-validator';
 
-export class CreateSubjectDto extends PartialType(BaseSubjectDto) {
-  @ApiProperty({ required: true })
+export class CreateSubjectDto {
+  @ApiProperty({
+    description: 'Subject itself',
+    example: 'New computer',
+    minLength: 1,
+    maxLength: 255,
+  })
   @IsNotEmpty()
+  @IsString()
+  @Length(1, 255)
   name: string;
 
-  @ApiProperty({ required: true })
+  @ApiProperty({
+    description: 'Subject description',
+    example: 'Asking for a new computer',
+    minLength: 1,
+    maxLength: 255,
+  })
+  @IsString()
+  @Length(1, 255)
+  description: string;
+
+  @ApiProperty({
+    description: 'Service ID associated with the subject',
+    example: '78f2fdfa-290c-401c-553f-cc4d492e051d',
+  })
   @IsNotEmpty()
-  service_id: string;
+  @IsUUID('4')
+  serviceId: string;
 }

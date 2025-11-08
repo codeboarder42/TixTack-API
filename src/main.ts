@@ -17,7 +17,6 @@ async function bootstrap() {
     .setTitle('TixTrack')
     .setDescription('Track your tickets')
     .setVersion('1.0')
-    .addTag('tixtrack')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);

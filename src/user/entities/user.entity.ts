@@ -8,13 +8,13 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true, nullable: false })
+  @Column({ unique: true, length: 320 })
   email: string;
 
-  @Column({ name: 'first_name', nullable: false })
+  @Column({ name: 'first_name', length: 255 })
   firstName: string;
 
-  @Column({ name: 'last_name', nullable: false })
+  @Column({ name: 'last_name', length: 255 })
   lastName: string;
 
   @Column(() => Timestamp, { prefix: false })

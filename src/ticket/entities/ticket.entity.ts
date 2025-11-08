@@ -3,12 +3,11 @@ import { TicketPriority, TicketStatus } from 'src/common/enum';
 import { Subject } from 'src/subject/entities/subject.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
-  Column,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-  RelationId,
+  Column,
 } from 'typeorm';
 
 @Entity('tickets')
@@ -16,10 +15,10 @@ export class Ticket {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: false })
+  @Column({ length: 255 })
   title: string;
 
-  @Column({ type: 'text', nullable: false })
+  @Column({ type: 'text' })
   description: string;
 
   @Column({
@@ -38,37 +37,34 @@ export class Ticket {
 
   @ManyToOne(() => User, (user) => user.createdTickets, {
     onDelete: 'SET NULL',
-    nullable: false,
   })
   @JoinColumn({ name: 'created_by' })
   creator: User;
 
-  @RelationId((ticket: Ticket) => ticket.creator)
-  creatorId: number;
+  @Column({ name: 'created_by' })
+  creatorId: string;
 
   @ManyToOne(() => User, (user) => user.assignedTickets, {
     onDelete: 'SET NULL',
-    nullable: false,
   })
   @JoinColumn({ name: 'assigned_to' })
   assignee: User;
 
-  @RelationId((ticket: Ticket) => ticket.assignee)
-  assigneeId: number;
+  @Column({ name: 'assigned_to' })
+  assigneeId: string;
 
   @ManyToOne(() => Subject, (subject) => subject.tickets, {
     onDelete: 'SET NULL',
-    nullable: false,
   })
   @JoinColumn({ name: 'subject_id' })
   subject: Subject;
 
-  @RelationId((ticket: Ticket) => ticket.subject)
-  subjectId: number;
+  @Column({ name: 'subject_id' })
+  subjectId: string;
 
   @Column(() => Timestamp, { prefix: false })
   timestamp: Timestamp;
 
-  @Column({ name: 'resolved_at' })
-  resolvedAt?: Date | null;
+  @Column({ name: 'resolved_at', type: 'timestamp', nullable: true })
+  resolvedAt?: Date;
 }
