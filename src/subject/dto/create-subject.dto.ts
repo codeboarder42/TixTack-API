@@ -1,5 +1,11 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsUUID, Length } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateSubjectDto {
   @ApiProperty({
@@ -10,18 +16,20 @@ export class CreateSubjectDto {
   })
   @IsNotEmpty()
   @IsString()
-  @Length(1, 255)
+  @MaxLength(255)
   name: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Subject description',
     example: 'Asking for a new computer',
     minLength: 1,
     maxLength: 255,
   })
+  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  @Length(1, 255)
-  description: string;
+  @MaxLength(255)
+  description?: string;
 
   @ApiProperty({
     description: 'Service ID associated with the subject',

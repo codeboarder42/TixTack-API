@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Subject } from './entities/subject.entity';
 import { Repository } from 'typeorm';
@@ -17,25 +17,39 @@ export class SubjectService {
   }
 
   async findOneById(id: string): Promise<Subject> {
-    return this.subjectRepository.findOneByOrFail({ id });
+    let subject: Subject;
+    try {
+      subject = await this.subjectRepository.findOneByOrFail({ id });
+    } catch {
+      throw new NotFoundException(`Subject with id ${id} not found`);
+    }
+    return subject;
+  }
+
+  async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {
+    return this.subjectRepository.save(createSubjectDto);
   }
 
   async update(
     id: string,
     updateSubjectDto: UpdateSubjectDto,
   ): Promise<Subject> {
-    const subject = await this.subjectRepository.findOneByOrFail({ id });
+    let subject: Subject;
+    try {
+      subject = await this.subjectRepository.findOneByOrFail({ id });
+    } catch {
+      throw new NotFoundException(`Subject with id ${id} not found`);
+    }
     const updatedSubject = { ...subject, ...updateSubjectDto } as Subject;
     return await this.subjectRepository.save(updatedSubject);
   }
 
   async delete(id: string) {
-    await this.subjectRepository.findOneByOrFail({ id });
+    try {
+      await this.subjectRepository.findOneByOrFail({ id });
+    } catch {
+      throw new NotFoundException(`Subject with id ${id} not found`);
+    }
     await this.subjectRepository.delete(id);
-    return { message: 'Subject deleted' };
-  }
-
-  async create(createSubjectDto: CreateSubjectDto): Promise<Subject> {
-    return this.subjectRepository.save(createSubjectDto);
   }
 }
